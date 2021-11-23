@@ -22,7 +22,7 @@ export default function UserAccountPage() {
 
   useEffect(() => {
     const userFromStorage = JSON.parse(localStorage.getItem('user'));
-    if (userFromStorage == null || userFromStorage == 'undefined') {
+    if (userFromStorage === null || userFromStorage === 'undefined') {
       history.push('/');
     }
     setUser(JSON.parse(localStorage.getItem('user')));

@@ -56,7 +56,7 @@ export default function NavBar() {
               <img
                 className='logoMini'
                 src='/images/SpOcTexter-logos_transparent_cropped.png'
-                alt='image'></img>
+                alt=''></img>
             </a>
             <IconButton
               edge='start'

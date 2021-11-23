@@ -22,14 +22,6 @@ const postOccasionURL = '/api/v1/spoc/account/friend/occasion';
 const deleteOccasionURL = postOccasionURL;
 
 export default function OccasionsPage() {
-  const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    userName: '',
-  });
-
   const history = useHistory();
 
   const occasionObjectLabels = ['Occasion', 'Date'];
@@ -62,10 +54,9 @@ export default function OccasionsPage() {
 
   useEffect(() => {
     const userFromStorage = JSON.parse(localStorage.getItem('user'));
-    if (userFromStorage == null || userFromStorage == 'undefined') {
+    if (userFromStorage === null || userFromStorage === 'undefined') {
       history.push('/');
     } else {
-      setUser(JSON.parse(localStorage.getItem('user')));
       fetchFriends(userFromStorage.userName);
     }
   }, []);
@@ -124,7 +115,7 @@ export default function OccasionsPage() {
   const handleSelect = (event) => {
     event.preventDefault();
     const selectedFriend = friends.filter((friend) => {
-      return friend.friendId == event.target.value;
+      return friend.friendId === event.target.value;
     });
 
     setFriend(selectedFriend[0]);
@@ -263,7 +254,6 @@ const Occasion = ({ occasion, deleteOccasion }) => {
           sx={{ alignSelf: 'center', justifySelf: 'center' }}
           onClick={() => {
             deleteOccasion(occasion.id);
-            console.log(occasion.id);
           }}>
           <DeleteIcon />
         </IconButton>

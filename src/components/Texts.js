@@ -1,7 +1,6 @@
 import { Container } from '@mui/material';
 import * as React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Grid } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import LeftSideBar from './LeftSideBar';
 import { Box } from '@mui/system';
 import NavBar from './NavBar';

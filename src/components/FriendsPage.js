@@ -16,6 +16,7 @@ export const allUrl = '/api/v1/spoc/account/friend/all';
 export const updateURL = '/api/v1/spoc/account/friend/update';
 export const deleteUrl = '/api/v1/spoc/account/friend/delete';
 export const gridTemplateSetting = '21% 21% 21% 21% auto';
+const friendFieldMargins = '0px 20px 0px 20px';
 
 export default function FriendsPage() {
   const [friends, setFriends] = useState([]);
@@ -31,7 +32,6 @@ export default function FriendsPage() {
         response.data.sort((a, b) =>
           a.friendFirstName.localeCompare(b.friendFirstName)
         );
-        console.log(response.data);
         setFriends(response.data);
       });
   };
@@ -87,7 +87,7 @@ export default function FriendsPage() {
   const friendObjectNames = ['firstName', 'lastName', 'DOB', 'phoneNumber'];
 
   const userFromStorage = JSON.parse(localStorage.getItem('user'));
-  const { firstName, lastName, email, phoneNumber, userName } = userFromStorage;
+  const { userName } = userFromStorage;
 
   return (
     <>
@@ -201,15 +201,8 @@ const Friend = ({
   const editFriend = (event) => {
     event.preventDefault();
 
-    if (isEdit == true) {
+    if (isEdit === true) {
       const data = new FormData(event.currentTarget);
-
-      const newFriend = {
-        newFriendPhoneNumber: data.get('phoneNumber'),
-        newFriendFirstName: data.get('firstName'),
-        newFriendLastName: data.get('lastName'),
-        newFriendDOB: data.get('DOB'),
-      };
 
       axios
         .put(updateURL, null, {
@@ -227,6 +220,13 @@ const Friend = ({
     setIsEdit(!isEdit);
   };
   const [isEdit, setIsEdit] = useState(false);
+  const friendFieldLabels = [
+    friendFirstName,
+    friendLastName,
+    friendDOB,
+    friendPhoneNumber,
+  ];
+  const friendFieldNames = ['firstName', 'lastName', 'DOB', 'phoneNumber'];
 
   return (
     <>
@@ -249,30 +249,13 @@ const Friend = ({
           </>
         ) : (
           <>
-            <TextField
-              sx={{ margin: '0px 20px 0px 20px', textAlign: 'center' }}
-              inputProps={{ style: { textAlign: 'center' } }}
-              size='small'
-              name='firstName'
-              defaultValue={friendFirstName}></TextField>
-            <TextField
-              sx={{ margin: '0px 20px 0px 20px' }}
-              inputProps={{ style: { textAlign: 'center' } }}
-              name='lastName'
-              size='small'
-              defaultValue={friendLastName}></TextField>
-            <TextField
-              sx={{ margin: '0px 20px 0px 20px' }}
-              inputProps={{ style: { textAlign: 'center' } }}
-              name='DOB'
-              size='small'
-              defaultValue={friendDOB}></TextField>
-            <TextField
-              sx={{ margin: '0px 20px 0px 20px' }}
-              inputProps={{ style: { textAlign: 'center' } }}
-              name='phoneNumber'
-              size='small'
-              defaultValue={friendPhoneNumber}></TextField>
+            {friendFieldLabels.map((text, index) => {
+              return (
+                <FriendFields
+                  name={friendFieldNames[index]}
+                  defaultValue={text}></FriendFields>
+              );
+            })}
           </>
         )}
         <section>
@@ -292,3 +275,18 @@ const Friend = ({
     </>
   );
 };
+
+function FriendFields(props) {
+  let { name, defaultValue } = props;
+
+  return (
+    <>
+      <TextField
+        sx={{ margin: friendFieldMargins }}
+        inputProps={{ style: { textAlign: 'center' } }}
+        name={name}
+        size='small'
+        defaultValue={defaultValue}></TextField>
+    </>
+  );
+}

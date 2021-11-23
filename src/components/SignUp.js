@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 //Other functional imports
 import axios from 'axios';
@@ -99,7 +99,6 @@ export default function SignUp() {
       //If it sends back an error, parse the error and display the error below the password field
       //Set up an error response UI component below the confirm password field
 
-      console.log('sending post request.');
       setErrors({ ...errorObject });
       axios
         .post('/api/v1/spoc/profile/', {
@@ -123,7 +122,6 @@ export default function SignUp() {
               }
             )
             .then((response) => {
-              console.log(response.status);
               const user = {
                 userName: userName,
                 email: email,
@@ -155,7 +153,7 @@ export default function SignUp() {
           <img
             className='logoSmall'
             src='/images/SpOcTexter-logos_transparent_cropped.png'
-            alt='image'></img>
+            alt=''></img>
           <Typography component='h1' variant='h5'>
             Sign up
           </Typography>

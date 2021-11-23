@@ -44,7 +44,7 @@ class SignIn extends React.Component {
 
   redirect = async () => {
     const user = await this.saveUser();
-    if (user.userName != '') {
+    if (user.userName !== '') {
       this.props.history.push('/account/overview');
     } else {
       console.log('could not access storage.');
@@ -126,7 +126,7 @@ class SignIn extends React.Component {
   render() {
     if (
       localStorage.getItem('user') != null &&
-      localStorage.getItem('user') != 'undefined'
+      localStorage.getItem('user') !== 'undefined'
     ) {
       this.props.history.push('/account/overview');
     }
@@ -145,10 +145,7 @@ class SignIn extends React.Component {
             <img
               className='logoSmall'
               src='/images/SpOcTexter-logos_transparent_cropped.png'
-              alt='image'></img>
-            {/* <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
+              alt=''></img>
             <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
