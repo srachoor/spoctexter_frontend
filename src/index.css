@@ -11,3 +11,68 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.accountdetail {
+  display: flex;
+  text-align: left;
+  justify-content: center;
+  max-width: var(--fixed-width);
+  margin: 1rem auto;
+  align-items: center;
+  border-radius: var(--radius);
+  border-bottom: rgb(184, 179, 179);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.acctlabel1,
+.acctlabel2 {
+  width: 50%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
+  font-size: large;
+  font-weight: 600;
+}
+
+.acctlabel1 {
+  color: gray;
+}
+
+.header {
+  text-align: left;
+  /* margin-top: 10px; */
+}
+
+.second-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logoMini {
+  width: 30vh;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.navbar {
+  /* display: inline-block; */
+  width: 100vw;
+}
+
+.toolbar {
+  width: 100vw;
+  /* position: relative; */
+}
+
+.sideBar {
+  position: relative;
+  left: 0px;
+}
+
+.accountIcon {
+  position: absolute;
+  right: 10px;
+}
+
+
