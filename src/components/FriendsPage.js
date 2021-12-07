@@ -13,19 +13,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export const addUrl = '/api/v1/spoc/account/friend/add';
 export const allUrl = '/api/v1/spoc/account/friend/all';
-export const updateURL = '/api/v1/spoc/account/friend/update';
+export const updateFriendURL = '/api/v1/spoc/account/friend/update';
 export const deleteUrl = '/api/v1/spoc/account/friend/delete';
 export const gridTemplateSetting = '21% 21% 21% 21% auto';
 const friendFieldMargins = '0px 20px 0px 20px';
 
 export default function FriendsPage() {
   const [friends, setFriends] = useState([]);
+  const token = localStorage.getItem('token');
 
   const fetchFriends = async () => {
     axios
       .get(allUrl, {
         params: {
-          userName: userName,
+          username: username,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((response) => {
@@ -54,7 +58,10 @@ export default function FriendsPage() {
     axios
       .post(addUrl, newFriend, {
         params: {
-          username: userName,
+          username: username,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((resp) => {
@@ -70,6 +77,9 @@ export default function FriendsPage() {
       .delete(deleteUrl, {
         params: {
           friendId: id,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((res) => {
@@ -87,7 +97,7 @@ export default function FriendsPage() {
   const friendObjectNames = ['firstName', 'lastName', 'DOB', 'phoneNumber'];
 
   const userFromStorage = JSON.parse(localStorage.getItem('user'));
-  const { userName } = userFromStorage;
+  const { username } = userFromStorage;
 
   return (
     <>
@@ -205,13 +215,16 @@ const Friend = ({
       const data = new FormData(event.currentTarget);
 
       axios
-        .put(updateURL, null, {
+        .put(updateFriendURL, null, {
           params: {
             newFriendPhoneNumber: data.get('phoneNumber'),
             newFriendFirstName: data.get('firstName'),
             newFriendLastName: data.get('lastName'),
             newFriendDOB: data.get('DOB'),
             friendId: event.currentTarget.id,
+          },
+          headers: {
+            Authorization: localStorage.getItem('token'),
           },
         })
         .then((resp) => fetchFriends())

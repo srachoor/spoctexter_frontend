@@ -110,10 +110,10 @@ export default function SignUp() {
         .then((response) => {
           axios
             .post(
-              'api/v1/spoc/account',
+              'api/v1/spoc/account/signup',
               {
-                userName: userName,
-                userPassword: password,
+                username: userName,
+                password: password,
               },
               {
                 params: {
@@ -130,7 +130,8 @@ export default function SignUp() {
                 phoneNumber: phoneNumber,
               };
               localStorage.setItem('user', JSON.stringify(user));
-              history.push('/account/overview');
+              window.confirm('User Account has been created.');
+              history.push('/');
             });
         })
         .catch((error) => {
@@ -253,7 +254,7 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
-            <Grid container justifyContent='flex-end'>
+            <Grid>
               <Grid item>
                 <Link href='/' variant='body2'>
                   Already have an account? Sign in

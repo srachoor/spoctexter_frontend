@@ -10,6 +10,8 @@ import {
   UserAccountPage,
   OccasionsPage,
   Texts,
+  UpdateProfile,
+  PasswordChange,
 } from './components/';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React from 'react';
@@ -37,6 +39,16 @@ function App() {
             component={() => <OccasionsPage />}
           />
           <Route path='/account/texts' exact component={() => <Texts />} />
+          <Route
+            path='/account/update'
+            exact
+            component={() => <UpdateProfile />}
+          />
+          <Route
+            path='/account/pwchange'
+            exact
+            component={() => <PasswordChange />}
+          />
         </Switch>
       </Router>
     </div>
@@ -44,15 +56,3 @@ function App() {
 }
 
 export default App;
-
-// const [person, setPerson] = useState([]);
-
-// useEffect(()=>{
-//   axios.get("/api/v1/spoc/profile/email=Max.Hudson@spoctexter.com")
-//   .then(res => {
-//     console.log(res.data)
-//     setPerson(res.data)
-//   }).catch(err => {
-//     console.log(err)
-//   });
-// },[])

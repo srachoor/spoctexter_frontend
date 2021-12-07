@@ -6,3 +6,5 @@ export { default as FriendsPage } from './FriendsPage.js';
 export { default as OccasionsPage } from './OccasionsPage.js';
 export { default as NavBar } from './NavBar.js';
 export { default as Texts } from './Texts.js';
+export { default as UpdateProfile } from './UpdateProfile.js';
+export { default as PasswordChange } from './PasswordChange.js';

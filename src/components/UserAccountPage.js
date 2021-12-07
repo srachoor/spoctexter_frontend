@@ -28,7 +28,15 @@ export default function UserAccountPage() {
     setUser(JSON.parse(localStorage.getItem('user')));
   }, []);
 
-  const { firstName, lastName, email, phoneNumber, userName } = user;
+  const { firstName, lastName, email, phoneNumber, username } = user;
+
+  const handleUpdate = () => {
+    history.push('/account/update');
+  };
+
+  const handleChangePW = () => {
+    history.push('/account/pwchange');
+  };
 
   return (
     <>
@@ -79,8 +87,9 @@ export default function UserAccountPage() {
                   value={phoneNumber}></AccountDetail>
                 <AccountDetail
                   label='Username'
-                  value={userName}></AccountDetail>
+                  value={username}></AccountDetail>
                 <Button
+                  onClick={handleUpdate}
                   className='editBtn'
                   variant='outlined'
                   color='secondary'
@@ -93,6 +102,7 @@ export default function UserAccountPage() {
                 </Button>
                 <Button
                   className='editBtn'
+                  onClick={handleChangePW}
                   variant='outlined'
                   color='secondary'
                   style={{

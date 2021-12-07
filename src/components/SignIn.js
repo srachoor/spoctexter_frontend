@@ -23,14 +23,13 @@ class SignIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       user: {
-        userName: '',
+        username: '',
         email: '',
         firstName: '',
         lastName: '',
         phoneNumber: '',
       },
       error: {
-        emailError: '',
         passwordError: '',
       },
     };
@@ -63,70 +62,105 @@ class SignIn extends React.Component {
     });
 
     const userSubmitted = {
-      email: data.get('email'),
+      username: data.get('username'),
       password: data.get('password'),
     };
 
     axios
-      .get('/api/v1/spoc/account/email=' + userSubmitted.email)
-      .then((response) => {
-        this.setState({
-          user: {
-            ...this.state.user,
-            userName: response.data.userName,
-            email: userSubmitted.email,
-          },
-        });
+      .post('/login', {
+        username: userSubmitted.username,
+        password: userSubmitted.password,
+      })
+      .then((res) => {
+        const token = res.headers.authorization;
+        localStorage.setItem('token', token);
+        this.state.user.username = userSubmitted.username;
         axios
-          .get('/api/v1/spoc/account/pwusername=' + this.state.user.userName, {
-            params: {
-              password: userSubmitted.password,
+          .get('/api/v1/spoc/account/' + userSubmitted.username, {
+            headers: {
+              Authorization: token,
             },
           })
-          .then((response) => {
-            if (response.data === true) {
-              axios
-                .get('api/v1/spoc/profile/email=' + userSubmitted.email)
-                .then((response) => {
-                  const userReceived = response.data;
-                  console.log(userReceived);
-                  this.setState({
-                    user: {
-                      ...this.state.user,
-                      phoneNumber: userReceived.phoneNumber,
-                      firstName: userReceived.firstName,
-                      lastName: userReceived.lastName,
-                    },
-                  });
-                  this.redirect();
-                });
-            }
-          })
-          .catch((error) => {
-            console.log(error.response.data.message);
-            this.setState({
-              error: {
-                ...this.state.error,
-                passwordError: 'Incorrect password.',
-              },
-            });
+          .then((res) => {
+            const { firstName, lastName, email, phoneNumber } = res.data;
+            this.state.user.firstName = firstName;
+            this.state.user.lastName = lastName;
+            this.state.user.email = email;
+            this.state.user.phoneNumber = phoneNumber;
+            this.redirect();
           });
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
+      .catch((err) => {
         this.setState({
           error: {
             ...this.state.error,
-            emailError: error.response.data.message,
+            passwordError: 'Incorrect username or password.',
           },
         });
       });
+
+    // axios
+    //   .get('/api/v1/spoc/account/email=' + userSubmitted.email)
+    //   .then((response) => {
+    //     this.setState({
+    //       user: {
+    //         ...this.state.user,
+    //         userName: response.data.userName,
+    //         email: userSubmitted.email,
+    //       },
+    //     });
+    //     axios
+    //       .get('/api/v1/spoc/account/pwusername=' + this.state.user.userName, {
+    //         params: {
+    //           password: userSubmitted.password,
+    //         },
+    //       })
+    //       .then((response) => {
+    //         if (response.data === true) {
+    //           axios
+    //             .get('api/v1/spoc/profile/email=' + userSubmitted.email)
+    //             .then((response) => {
+    //               const userReceived = response.data;
+    //               console.log(userReceived);
+    //               this.setState({
+    //                 user: {
+    //                   ...this.state.user,
+    //                   phoneNumber: userReceived.phoneNumber,
+    //                   firstName: userReceived.firstName,
+    //                   lastName: userReceived.lastName,
+    //                 },
+    //               });
+    //               this.redirect();
+    //             });
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.log(error.response.data.message);
+    //         this.setState({
+    //           error: {
+    //             ...this.state.error,
+    //             passwordError: 'Incorrect password.',
+    //           },
+    //         });
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response.data.message);
+    //     this.setState({
+    //       error: {
+    //         ...this.state.error,
+    //         emailError: error.response.data.message,
+    //       },
+    //     });
+    //   });
   };
 
   render() {
     if (
       localStorage.getItem('user') != null &&
-      localStorage.getItem('user') !== 'undefined'
+      localStorage.getItem('user') !== 'undefined' &&
+      localStorage.getItem('token') !== null &&
+      localStorage.getItem('token') !== 'undefined'
     ) {
       this.props.history.push('/account/overview');
     }
@@ -158,12 +192,11 @@ class SignIn extends React.Component {
                 margin='normal'
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id='username'
+                label='Username'
+                name='username'
+                autoComplete='username'
                 autoFocus
-                helperText={this.state.error.emailError}
               />
               <TextField
                 margin='normal'

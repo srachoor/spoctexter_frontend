@@ -29,6 +29,7 @@ export default function NavBar() {
   const handleLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setTimeout(() => {
       history.push('/');
     }, 1000);
@@ -51,12 +52,12 @@ export default function NavBar() {
               style={{
                 flexGrow: 1,
                 textAlign: 'left',
-                verticalAlign: 'middle',
               }}>
               <img
                 className='logoMini'
                 src='/images/SpOcTexter-logos_transparent_cropped.png'
-                alt=''></img>
+                alt=''
+                style={{ verticalAlign: 'middle' }}></img>
             </a>
             <IconButton
               edge='start'

@@ -61,7 +61,7 @@ code {
 }
 
 .toolbar {
-  width: 100vw;
+  width: 100%;
   /* position: relative; */
 }
 
@@ -75,4 +75,13 @@ code {
   right: 10px;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.box {
+  width: 60%;
+  margin: auto;
+}

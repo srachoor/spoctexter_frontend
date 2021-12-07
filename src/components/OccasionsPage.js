@@ -24,6 +24,7 @@ const deleteOccasionURL = postOccasionURL;
 export default function OccasionsPage() {
   const history = useHistory();
 
+  const token = localStorage.getItem('token');
   const occasionObjectLabels = ['Occasion', 'Date'];
   const occasionObjectNames = ['occasionName', 'occasionDate'];
   const [friends, setFriends] = useState([]);
@@ -37,11 +38,14 @@ export default function OccasionsPage() {
   const [friendLabel, setFriendLabel] = useState('');
   const [occasions, setOccasions] = useState([]);
 
-  const fetchFriends = async (userName) => {
+  const fetchFriends = async (username) => {
     axios
       .get(allUrl, {
         params: {
-          userName: userName,
+          username: username,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((response) => {
@@ -57,7 +61,7 @@ export default function OccasionsPage() {
     if (userFromStorage === null || userFromStorage === 'undefined') {
       history.push('/');
     } else {
-      fetchFriends(userFromStorage.userName);
+      fetchFriends(userFromStorage.username);
     }
   }, []);
 
@@ -66,6 +70,9 @@ export default function OccasionsPage() {
       .delete(deleteOccasionURL, {
         params: {
           occasionId: id,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((res) => {
@@ -79,6 +86,9 @@ export default function OccasionsPage() {
       .get(getOccasionsURL, {
         params: {
           friendId: friendId,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((res) => {
@@ -102,6 +112,9 @@ export default function OccasionsPage() {
       .post(postOccasionURL, newOccasion, {
         params: {
           friendId: friend.friendId,
+        },
+        headers: {
+          Authorization: token,
         },
       })
       .then((resp) => {

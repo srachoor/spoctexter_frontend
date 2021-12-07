@@ -41,7 +41,8 @@ export default function LeftSideBar() {
             sx={{
               bgcolor: theme.palette.primary.dark,
               color: 'white',
-              height: '100vh',
+              minHeight: '100vh',
+              height: '100%',
             }}>
             {['Account Overview', 'Friends', 'Occasions', 'Texts'].map(
               (text, index) => (
