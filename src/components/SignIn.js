@@ -98,61 +98,6 @@ class SignIn extends React.Component {
           },
         });
       });
-
-    // axios
-    //   .get('/api/v1/spoc/account/email=' + userSubmitted.email)
-    //   .then((response) => {
-    //     this.setState({
-    //       user: {
-    //         ...this.state.user,
-    //         userName: response.data.userName,
-    //         email: userSubmitted.email,
-    //       },
-    //     });
-    //     axios
-    //       .get('/api/v1/spoc/account/pwusername=' + this.state.user.userName, {
-    //         params: {
-    //           password: userSubmitted.password,
-    //         },
-    //       })
-    //       .then((response) => {
-    //         if (response.data === true) {
-    //           axios
-    //             .get('api/v1/spoc/profile/email=' + userSubmitted.email)
-    //             .then((response) => {
-    //               const userReceived = response.data;
-    //               console.log(userReceived);
-    //               this.setState({
-    //                 user: {
-    //                   ...this.state.user,
-    //                   phoneNumber: userReceived.phoneNumber,
-    //                   firstName: userReceived.firstName,
-    //                   lastName: userReceived.lastName,
-    //                 },
-    //               });
-    //               this.redirect();
-    //             });
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.response.data.message);
-    //         this.setState({
-    //           error: {
-    //             ...this.state.error,
-    //             passwordError: 'Incorrect password.',
-    //           },
-    //         });
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data.message);
-    //     this.setState({
-    //       error: {
-    //         ...this.state.error,
-    //         emailError: error.response.data.message,
-    //       },
-    //     });
-    //   });
   };
 
   render() {
