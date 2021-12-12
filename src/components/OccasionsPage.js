@@ -15,10 +15,11 @@ import { Divider } from '@mui/material';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useHistory } from 'react-router';
+import { baseURL } from './SignIn';
 
 const gridTemplateSetting = '40% 40% auto';
-const getOccasionsURL = '/api/v1/spoc/account/friend/occasion/all';
-const postOccasionURL = '/api/v1/spoc/account/friend/occasion';
+const getOccasionsURL = baseURL + 'api/v1/spoc/account/friend/occasion/all';
+const postOccasionURL = baseURL + 'api/v1/spoc/account/friend/occasion';
 const deleteOccasionURL = postOccasionURL;
 
 export default function OccasionsPage() {

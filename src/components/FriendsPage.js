@@ -10,11 +10,12 @@ import Divider from '@mui/material/Divider';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { baseURL } from './SignIn';
 
-export const addUrl = '/api/v1/spoc/account/friend/add';
-export const allUrl = '/api/v1/spoc/account/friend/all';
-export const updateFriendURL = '/api/v1/spoc/account/friend/update';
-export const deleteUrl = '/api/v1/spoc/account/friend/delete';
+export const addUrl = baseURL + 'api/v1/spoc/account/friend/add';
+export const allUrl = baseURL + 'api/v1/spoc/account/friend/all';
+export const updateFriendURL = baseURL + 'api/v1/spoc/account/friend/update';
+export const deleteUrl = baseURL + 'api/v1/spoc/account/friend/delete';
 export const gridTemplateSetting = '21% 21% 21% 21% auto';
 const friendFieldMargins = '0px 20px 0px 20px';
 
@@ -143,6 +144,9 @@ function AddFriend(props) {
   let required = true;
   if (label === 'Date of Birth') {
     type = 'date';
+  }
+  if (label === 'Phone Number') {
+    required = false;
   }
 
   return (

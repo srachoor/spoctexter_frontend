@@ -9,6 +9,11 @@ import { Menu, MenuItem } from '@mui/material';
 import { useHistory } from 'react-router';
 
 import { theme } from './CustomTheme';
+import axios from 'axios';
+import { deleteUrl } from './FriendsPage';
+import { baseURL } from './SignIn';
+
+export const deleteProfileUrl = baseURL + 'api/v1/spoc/profile/email=';
 
 export default function NavBar() {
   const history = useHistory();
@@ -33,6 +38,31 @@ export default function NavBar() {
     setTimeout(() => {
       history.push('/');
     }, 1000);
+  };
+
+  const handleDelete = () => {
+    setAnchorEl(null);
+    let confirmation = window.prompt(
+      "Are you sure you want to delete your account? You will lose all data associated with it. Type 'yes' to delete."
+    );
+
+    if (confirmation.toLowerCase() === 'yes') {
+      const email = JSON.parse(localStorage.getItem('user')).email;
+
+      axios
+        .delete(deleteProfileUrl + email, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        })
+        .then((res) => {
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+          setTimeout(() => {
+            history.push('/');
+          }, 1000);
+        });
+    }
   };
 
   const handleClose = () => {
@@ -79,6 +109,7 @@ export default function NavBar() {
               }}>
               <MenuItem onClick={handleMyAccount}>My account</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={handleDelete}>Delete my account</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

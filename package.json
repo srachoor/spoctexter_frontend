@@ -44,6 +44,5 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.4"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

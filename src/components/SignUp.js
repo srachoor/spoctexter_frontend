@@ -16,6 +16,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { theme } from './CustomTheme';
+import { baseURL } from './SignIn';
+const addUserProfileURL = baseURL + 'api/v1/spoc/profile/';
+const addUserAcctURL = baseURL + 'api/v1/spoc/account/signup';
 
 export default function SignUp() {
   const history = useHistory();
@@ -101,7 +104,7 @@ export default function SignUp() {
 
       setErrors({ ...errorObject });
       axios
-        .post('/api/v1/spoc/profile/', {
+        .post(addUserProfileURL, {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -110,7 +113,7 @@ export default function SignUp() {
         .then((response) => {
           axios
             .post(
-              'api/v1/spoc/account/signup',
+              addUserAcctURL,
               {
                 username: userName,
                 password: password,
@@ -136,6 +139,7 @@ export default function SignUp() {
         })
         .catch((error) => {
           console.log(error.response);
+          alert(error.response.data.message);
         });
     }
   };
@@ -146,7 +150,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

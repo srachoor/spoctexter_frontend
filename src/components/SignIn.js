@@ -17,6 +17,11 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { theme } from './CustomTheme';
 
+export const baseURL =
+  'http://spoctexter-env.eba-7vhu62ka.us-east-2.elasticbeanstalk.com/';
+const loginURL = baseURL + 'login';
+const getUserAcctURL = baseURL + 'api/v1/spoc/account/';
+
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -67,16 +72,18 @@ class SignIn extends React.Component {
     };
 
     axios
-      .post('/login', {
+      .post(loginURL, {
         username: userSubmitted.username,
         password: userSubmitted.password,
       })
       .then((res) => {
+        console.log(res);
         const token = res.headers.authorization;
+        console.log(token);
         localStorage.setItem('token', token);
         this.state.user.username = userSubmitted.username;
         axios
-          .get('/api/v1/spoc/account/' + userSubmitted.username, {
+          .get(getUserAcctURL + userSubmitted.username, {
             headers: {
               Authorization: token,
             },
@@ -116,7 +123,7 @@ class SignIn extends React.Component {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -125,6 +132,10 @@ class SignIn extends React.Component {
               className='logoSmall'
               src='/images/SpOcTexter-logos_transparent_cropped.png'
               alt=''></img>
+            <Typography component='h3'>
+              Currently in Beta Version (Functionality Limited)
+            </Typography>
+            <p></p>
             <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
@@ -154,10 +165,10 @@ class SignIn extends React.Component {
                 autoComplete='current-password'
                 helperText={this.state.error.passwordError}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value='remember' color='primary' />}
                 label='Remember me'
-              />
+              /> */}
               <Button
                 type='submit'
                 fullWidth
@@ -166,15 +177,29 @@ class SignIn extends React.Component {
                 Sign In{' '}
               </Button>
               <Grid>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link href='#' variant='body2'>
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
                   <Link href='signup' variant='body2'>
                     "Don't have an account? Sign Up"
                   </Link>
+                </Grid>
+                <Grid item>
+                  <p>
+                    Welcome to SpocTexter, a web app that sends you text
+                    reminders about special occasions in your friends' and
+                    family's lives. This web app is not currently launched.
+                  </p>
+                  <p></p>
+                  <p>
+                    Built by:&nbsp;
+                    <a href='https://www.linkedin.com/in/sai-rachoor-71108713/'>
+                      Sai Rachoor
+                    </a>
+                  </p>
                 </Grid>
               </Grid>
             </Box>

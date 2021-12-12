@@ -15,9 +15,10 @@ import { useHistory } from 'react-router';
 import { theme } from './CustomTheme';
 import NavBar from './NavBar';
 import LeftSideBar from './LeftSideBar';
+import { baseURL } from './SignIn';
 
-const validatePWURL = '/api/v1/spoc/account/pwusername=';
-const changePWURL = '/api/v1/spoc/account/pwchange=';
+const validatePWURL = baseURL + 'api/v1/spoc/account/pwusername=';
+const changePWURL = baseURL + 'api/v1/spoc/account/pwchange=';
 
 export default function PasswordChange() {
   const history = useHistory();

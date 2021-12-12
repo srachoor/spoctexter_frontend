@@ -16,10 +16,11 @@ import { theme } from './CustomTheme';
 import NavBar from './NavBar';
 import LeftSideBar from './LeftSideBar';
 import { CodeSharp } from '@mui/icons-material';
+import { baseURL } from './SignIn';
 
-const updateProfileURL = '/api/v1/spoc/profile/update';
-const getUserProfileURL = '/api/v1/spoc/profile/email=';
-const getUserAcctURL = '/api/v1/spoc/account/email=';
+const updateProfileURL = baseURL + 'api/v1/spoc/profile/update';
+const getUserProfileURL = baseURL + 'api/v1/spoc/profile/email=';
+const getUserAcctURL = baseURL + 'api/v1/spoc/account/email=';
 
 export default function UpdateProfile() {
   const history = useHistory();
