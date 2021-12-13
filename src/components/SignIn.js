@@ -58,6 +58,8 @@ class SignIn extends React.Component {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    axios.get(baseURL).then((res) => console.log(res));
+
     this.setState({
       error: {
         emailError: '',
