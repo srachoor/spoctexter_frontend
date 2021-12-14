@@ -17,7 +17,7 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { theme } from './CustomTheme';
 
-export const baseURL = '/spoctexter/';
+export const baseURL = 'http://spoctexter-env.eba-7vhu62ka.us-east-2.elasticbeanstalk.com/';
 const loginURL = baseURL + 'login';
 const getUserAcctURL = baseURL + 'api/v1/spoc/account/';
 
