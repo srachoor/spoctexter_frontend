@@ -49,7 +49,12 @@ class SignIn extends React.Component {
   redirect = async () => {
     const user = await this.saveUser();
     if (user.userName !== '') {
-      this.props.history.push('/account/overview');
+      console.log('trying to route to account overview');
+      try {
+        this.props.history.push('/account/overview');
+      } catch (error) {
+        console.log('failed to route to ');
+      }
     } else {
       console.log('could not access storage.');
     }
@@ -59,7 +64,12 @@ class SignIn extends React.Component {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    axios.get(baseURL).then((res) => console.log(res));
+    console.log('button clicked!');
+
+    axios
+      .get(baseURL)
+      .then((res) => console.log(res))
+      .catch((err) => console.log('error getting greeting'));
 
     this.setState({
       error: {
@@ -79,7 +89,9 @@ class SignIn extends React.Component {
         password: userSubmitted.password,
       })
       .then((res) => {
+        console.log('successfully got information from login process');
         console.log(res);
+
         const token = res.headers.authorization;
         console.log(token);
         localStorage.setItem('token', token);
@@ -91,12 +103,21 @@ class SignIn extends React.Component {
             },
           })
           .then((res) => {
+            console.log(
+              'got back a 200 from the useraccount get request' + res
+            );
             const { firstName, lastName, email, phoneNumber } = res.data;
             this.state.user.firstName = firstName;
             this.state.user.lastName = lastName;
             this.state.user.email = email;
             this.state.user.phoneNumber = phoneNumber;
             this.redirect();
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log(
+              'error with the subsequent axios get request to get user information'
+            );
           });
       })
       .catch((err) => {
@@ -106,6 +127,7 @@ class SignIn extends React.Component {
             passwordError: 'Incorrect username or password.',
           },
         });
+        console.log('something wrong with the initial login post-request');
       });
   };
 
