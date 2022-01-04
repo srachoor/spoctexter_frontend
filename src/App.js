@@ -5,6 +5,7 @@
 import './App.css';
 import {
   FriendsPage,
+  Home,
   SignIn,
   SignUp,
   UserAccountPage,
@@ -15,13 +16,16 @@ import {
 } from './components/';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React from 'react';
+import TestModal from './components/TestModal';
 
 function App() {
   return (
     <div className='App'>
+      <TestModal></TestModal>
       <Router>
         <Switch>
-          <Route path='/' exact component={() => <SignIn />} />
+          <Route path='/' exact component={() => <Home />} />
+          <Route path='/signin' exact component={() => <SignIn />} />
           <Route path='/signup' exact component={() => <SignUp />} />
           <Route
             path='/account/overview'

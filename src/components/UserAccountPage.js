@@ -1,11 +1,11 @@
 import { Button, Container, Typography } from '@mui/material';
 import * as React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './CustomTheme';
 import { Grid } from '@mui/material';
 import LeftSideBar from './LeftSideBar';
 import NavBar from './NavBar';
 import { Box } from '@mui/system';
-import { theme } from './CustomTheme';
 import { useHistory } from 'react-router';
 import { useEffect, useState } from 'react';
 
@@ -101,7 +101,7 @@ export default function UserAccountPage() {
                   Update Profile
                 </Button>
                 <Button
-                  className='editBtn'
+                  className='btn'
                   onClick={handleChangePW}
                   variant='outlined'
                   color='secondary'

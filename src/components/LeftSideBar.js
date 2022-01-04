@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
+import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,16 +12,14 @@ import EventIcon from '@mui/icons-material/Event';
 import MessageIcon from '@mui/icons-material/Message';
 import { theme } from './CustomTheme';
 import { ThemeProvider } from '@emotion/react';
-
-//Unused imports from default SideBar
-// import AppBar from '@mui/material/AppBar';
-// import Toolbar from '@mui/material/Toolbar';
-// import Typography from '@mui/material/Typography';
-// import Divider from '@mui/material/Divider';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
+import SendToMobileIcon from '@mui/icons-material/SendToMobile';
+import { useEffect, useState } from 'react';
+import { baseURL } from './SignIn';
+import axios from 'axios';
+import { useGlobalContext } from './context';
 
 const drawerWidth = '17.5vw';
+const getUserAcctURL = baseURL + 'api/v1/spoc/account/username=';
 const sideBarLinks = [
   '/account/overview',
   '/account/friends',
@@ -29,6 +28,26 @@ const sideBarLinks = [
 ];
 
 export default function LeftSideBar() {
+  const { openModal } = useGlobalContext();
+  const [testTextSent, setTestTextSent] = useState(true);
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(() => {
+    axios
+      .get(getUserAcctURL + user.username, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setTestTextSent(res.data.hasTestedText);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -61,6 +80,16 @@ export default function LeftSideBar() {
                 </ListItem>
               )
             )}
+            {testTextSent == false ? (
+              <>
+                <ListItem button onClick={openModal}>
+                  <ListItemIcon sx={{ color: 'white' }}>
+                    <SendToMobileIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={'Send a Test'}></ListItemText>
+                </ListItem>
+              </>
+            ) : null}
           </List>
         </Box>
       </ThemeProvider>

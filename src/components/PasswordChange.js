@@ -52,7 +52,6 @@ export default function PasswordChange() {
           },
         })
         .then((res) => {
-          console.log(res);
           if (res.data === true) {
             axios
               .put(changePWURL + username, null, {
@@ -65,7 +64,6 @@ export default function PasswordChange() {
                 },
               })
               .then((res) => {
-                console.log(res);
                 window.confirm('Password has been updated.');
                 history.push('/account/overview');
               })

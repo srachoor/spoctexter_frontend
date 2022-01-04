@@ -15,7 +15,6 @@ import { useHistory } from 'react-router';
 import { theme } from './CustomTheme';
 import NavBar from './NavBar';
 import LeftSideBar from './LeftSideBar';
-import { CodeSharp } from '@mui/icons-material';
 import { baseURL } from './SignIn';
 
 const updateProfileURL = baseURL + 'api/v1/spoc/profile/update';
@@ -47,8 +46,6 @@ export default function UpdateProfile() {
       currentEmail: email,
     };
 
-    console.log(updatedUserParams);
-
     axios
       .put(updateProfileURL, null, {
         params: updatedUserParams,
@@ -68,7 +65,6 @@ export default function UpdateProfile() {
             },
           })
           .then((res) => {
-            console.log(res.data);
             const user = {
               email: res.data.email,
               phoneNumber: res.data.phoneNumber,
@@ -88,7 +84,6 @@ export default function UpdateProfile() {
                 history.push('/account/overview');
               })
               .catch((error) => alert(error.response.data.message));
-            console.log(user);
           });
       })
       .catch((error) => alert(error.response.data.message));

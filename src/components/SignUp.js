@@ -134,7 +134,7 @@ export default function SignUp() {
               };
               localStorage.setItem('user', JSON.stringify(user));
               window.confirm('User Account has been created.');
-              history.push('/');
+              history.push('/signin');
             });
         })
         .catch((error) => {

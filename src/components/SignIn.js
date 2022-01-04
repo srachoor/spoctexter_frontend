@@ -5,8 +5,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -19,6 +17,7 @@ import { theme } from './CustomTheme';
 
 // export const baseURL = 'http://spoctexter-env.eba-7vhu62ka.us-east-2.elasticbeanstalk.com/';
 export const baseURL = '/spoctexter/';
+// export const baseURL = 'http://localhost:6969/';
 const loginURL = baseURL + 'login';
 const getUserAcctURL = baseURL + 'api/v1/spoc/account/';
 
@@ -49,27 +48,20 @@ class SignIn extends React.Component {
   redirect = async () => {
     const user = await this.saveUser();
     if (user.userName !== '') {
-      console.log('trying to route to account overview');
+      // console.log('trying to route to account overview');
       try {
         this.props.history.push('/account/overview');
       } catch (error) {
-        console.log('failed to route to ');
+        console.log(error);
       }
     } else {
-      console.log('could not access storage.');
+      console.log('could not access storage');
     }
   };
 
   handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log('button clicked!');
-
-    axios
-      .get(baseURL)
-      .then((res) => console.log(res))
-      .catch((err) => console.log('error getting greeting'));
 
     this.setState({
       error: {
@@ -79,7 +71,7 @@ class SignIn extends React.Component {
     });
 
     const userSubmitted = {
-      username: data.get('username'),
+      username: data.get('username').toLowerCase(),
       password: data.get('password'),
     };
 
@@ -89,11 +81,7 @@ class SignIn extends React.Component {
         password: userSubmitted.password,
       })
       .then((res) => {
-        console.log('successfully got information from login process');
-        console.log(res);
-
         const token = res.headers.authorization;
-        console.log(token);
         localStorage.setItem('token', token);
         this.state.user.username = userSubmitted.username;
         axios
@@ -103,9 +91,6 @@ class SignIn extends React.Component {
             },
           })
           .then((res) => {
-            console.log(
-              'got back a 200 from the useraccount get request' + res
-            );
             const { firstName, lastName, email, phoneNumber } = res.data;
             this.state.user.firstName = firstName;
             this.state.user.lastName = lastName;
@@ -115,9 +100,6 @@ class SignIn extends React.Component {
           })
           .catch((err) => {
             console.log(err);
-            console.log(
-              'error with the subsequent axios get request to get user information'
-            );
           });
       })
       .catch((err) => {
@@ -127,7 +109,7 @@ class SignIn extends React.Component {
             passwordError: 'Incorrect username or password.',
           },
         });
-        console.log('something wrong with the initial login post-request');
+        console.log(err);
       });
   };
 

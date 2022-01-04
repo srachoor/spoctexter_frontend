@@ -18,6 +18,7 @@ import { useHistory } from 'react-router';
 import { baseURL } from './SignIn';
 
 const gridTemplateSetting = '40% 40% auto';
+const gridTemplateSettingList = '30% 30% 30% auto';
 const getOccasionsURL = baseURL + 'api/v1/spoc/account/friend/occasion/all';
 const postOccasionURL = baseURL + 'api/v1/spoc/account/friend/occasion';
 const deleteOccasionURL = postOccasionURL;
@@ -28,7 +29,8 @@ export default function OccasionsPage() {
   const token = localStorage.getItem('token');
   const occasionObjectLabels = ['Occasion', 'Date'];
   const occasionObjectNames = ['occasionName', 'occasionDate'];
-  const [friends, setFriends] = useState([]);
+  const [allFriends, setAllFriends] = useState([]);
+  const [selectedFriends, setSelectedFriends] = useState([]);
   const [friend, setFriend] = useState({
     friendId: '',
     friendFirstName: '',
@@ -53,7 +55,10 @@ export default function OccasionsPage() {
         response.data.sort((a, b) =>
           a.friendFirstName.localeCompare(b.friendFirstName)
         );
-        setFriends(response.data);
+        setAllFriends(response.data);
+        setFriendLabel('All');
+        setSelectedFriends(response.data);
+        fetchOccasions(response.data);
       });
   };
 
@@ -62,7 +67,9 @@ export default function OccasionsPage() {
     if (userFromStorage === null || userFromStorage === 'undefined') {
       history.push('/');
     } else {
-      fetchFriends(userFromStorage.username);
+      fetchFriends(userFromStorage.username).then(
+        setSelectedFriends(allFriends)
+      );
     }
   }, []);
 
@@ -82,60 +89,88 @@ export default function OccasionsPage() {
       });
   };
 
-  const fetchOccasions = (friendId) => {
-    axios
-      .get(getOccasionsURL, {
-        params: {
-          friendId: friendId,
-        },
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => {
-        setOccasions(res.data);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+  const fetchOccasions = (selectedFriends) => {
+    const occ = [];
+
+    selectedFriends.map((friend) => {
+      axios
+        .get(getOccasionsURL, {
+          params: {
+            friendId: friend.friendId,
+          },
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          res.data.forEach((item) => {
+            item.friendFirstName = friend.friendFirstName;
+            item.friendLastName = friend.friendLastName;
+            occ.push(item);
+          });
+        })
+        .then((res) => {
+          setOccasions(() => [...occ]);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    });
   };
 
   const addOccasion = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const newOccasion = {
-      occasionName: data.get('occasionName'),
-      occasionDate: data.get('occasionDate'),
-    };
+    if (friendLabel === 'All') {
+      alert('Please select a friend before adding an occasion.');
+    } else {
+      const newOccasion = {
+        occasionName: data.get('occasionName'),
+        occasionDate: data.get('occasionDate'),
+      };
 
-    axios
-      .post(postOccasionURL, newOccasion, {
-        params: {
-          friendId: friend.friendId,
-        },
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((resp) => {
-        fetchOccasions(friend.friendId);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+      axios
+        .post(postOccasionURL, newOccasion, {
+          params: {
+            friendId: friend.friendId,
+          },
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((resp) => {
+          fetchOccasions(selectedFriends);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    }
   };
 
   const handleSelect = (event) => {
     event.preventDefault();
-    const selectedFriend = friends.filter((friend) => {
-      return friend.friendId === event.target.value;
-    });
 
-    setFriend(selectedFriend[0]);
-    const friendId = event.target.value;
-    fetchOccasions(friendId);
-    setFriendLabel(event.target.value);
+    if (event.target.value === 'All') {
+      setFriend({
+        friendId: '',
+        friendFirstName: '',
+        friendLastName: '',
+        friendPhoneNumber: '',
+        friendDOB: '',
+      });
+      setSelectedFriends(allFriends);
+      fetchOccasions(allFriends);
+      setFriendLabel(event.target.value);
+    } else {
+      const currentFriend = allFriends.filter((friend) => {
+        return friend.friendId === event.target.value;
+      });
+      setFriend(currentFriend[0]);
+      setSelectedFriends(currentFriend);
+      fetchOccasions(currentFriend);
+      setFriendLabel(event.target.value);
+    }
   };
 
   return (
@@ -151,9 +186,15 @@ export default function OccasionsPage() {
               alignSelf: 'center',
             }}>
             <FormControl fullWidth>
-              <InputLabel>Select Friend</InputLabel>
-              <Select value={friendLabel} onChange={handleSelect}>
-                {friends.map((friend) => (
+              <InputLabel>
+                <b>Select Friend</b>
+              </InputLabel>
+              <Select
+                value={friendLabel}
+                onChange={handleSelect}
+                defaultValue={baseURL}>
+                <MenuItem value='All'>All</MenuItem>
+                {allFriends.map((friend) => (
                   <MenuItem value={friend.friendId} key={friend.friendId}>
                     {friend.friendFirstName + ' ' + friend.friendLastName}
                   </MenuItem>
@@ -184,7 +225,7 @@ export default function OccasionsPage() {
             <Occasions
               deleteOccasion={deleteOccasion}
               occasions={occasions}
-              friend={friend}></Occasions>
+              friends={selectedFriends}></Occasions>
           </Box>
         </Container>
       </Box>
@@ -213,23 +254,28 @@ function AddOccasion(props) {
   );
 }
 
-const Occasions = ({ occasions, deleteOccasion, friend }) => {
+const Occasions = ({ occasions, deleteOccasion, friends }) => {
+  occasions.sort((a, b) => a.friendLastName.localeCompare(b.friendLastName));
+
   return (
     <section>
       <h1 style={{ textAlign: 'left', marginLeft: '2%', marginBottom: '3%' }}>
-        {friend.friendFirstName
+        {friends && friends.length == 1
           ? 'Occasions for ' +
-            friend.friendFirstName +
+            friends[0].friendFirstName +
             ' ' +
-            friend.friendLastName
-          : 'Occasions'}
+            friends[0].friendLastName
+          : 'Occasions for All'}
       </h1>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: gridTemplateSetting,
+          gridTemplateColumns: gridTemplateSettingList,
           margin: '10px',
         }}>
+        <label>
+          <b>Friend</b>
+        </label>
         <label>
           <b>Occasion Name</b>
         </label>
@@ -258,9 +304,12 @@ const Occasion = ({ occasion, deleteOccasion }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: gridTemplateSetting,
+          gridTemplateColumns: gridTemplateSettingList,
           margin: '10px',
         }}>
+        <label style={{ alignSelf: 'center' }}>
+          {occasion.friendFirstName + ' ' + occasion.friendLastName}
+        </label>
         <label style={{ alignSelf: 'center' }}>{occasion.occasionName}</label>
         <label style={{ alignSelf: 'center' }}>{occasion.occasionDate}</label>
         <IconButton

@@ -1,5 +1,6 @@
 export { default as SignUp } from './SignUp';
 export { default as SignIn } from './SignIn';
+export { default as Home } from './Home';
 export { default as LeftSideBar } from './LeftSideBar.js';
 export { default as UserAccountPage } from './UserAccountPage.js';
 export { default as FriendsPage } from './FriendsPage.js';
