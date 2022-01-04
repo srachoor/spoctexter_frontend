@@ -87,7 +87,7 @@ code {
 }
 
 .home-page-hero {
-  background: url('./homepagebg.jpg');
+  background: url('homepagebg.jpg');
   opacity: 75%;
   width: 100%;
   height: 80vh;
