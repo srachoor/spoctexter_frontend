@@ -22,9 +22,9 @@ const Modal = () => {
     const testOccasion = data.get('testOccasion');
     const friendPhone = data.get('friendPhone');
     const message = `Reminder: Today is ${friendName}'s ${testOccasion}. Make sure you text them at ${friendPhone}.`;
-    console.log(message);
-    console.log(user.username);
-    console.log(token);
+    // console.log(message);
+    // console.log(user.username);
+    // console.log(token);
 
     axios.post(testTextURL + user.username, null, {
       params: { message: message },

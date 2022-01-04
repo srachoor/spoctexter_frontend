@@ -39,7 +39,7 @@ export default function Texts() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         response.data.sort(dynamicSort('id'));
         setTexts(response.data);
       });
