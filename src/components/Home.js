@@ -109,11 +109,11 @@ export default function Home() {
           <GitHubIcon sx={{ mr: '.5em' }}></GitHubIcon>
           <a
             style={{ marginRight: '2em' }}
-            href='https://github.com/srachoor/SpecialOccasionTexterWeb'>
+            href='https://github.com/srachoor/spoctexter_frontend'>
             Front-End Github
           </a>
           <GitHubIcon sx={{ mr: '.5em' }}></GitHubIcon>
-          <a href='https://github.com/srachoor/spoctexter_frontend'>
+          <a href='https://github.com/srachoor/SpecialOccasionTexterWeb'>
             Back-End Github
           </a>
         </div>
